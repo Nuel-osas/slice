@@ -2,7 +2,7 @@
 
 Build your own index of Coinbase tokenized stocks on Base, then hold it.
 
-Live: https://nuel-osas.github.io/slice/
+Live: https://slice-base.vercel.app
 
 ## What it does
 
@@ -24,7 +24,7 @@ npm install
 npm run dev
 ```
 
-Static export with `npm run build`; the `docs/` folder is what GitHub Pages serves.
+Deployed on Vercel; `npm run build` for a production build.
 
 ## Addresses
 

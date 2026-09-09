@@ -1,5 +1,6 @@
-web-next/node_modules
-web-next/out/
-web-next/.next/
-.env
+node_modules/
+.next/
+out/
+.vercel/
+.env*
 .DS_Store
