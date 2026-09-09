@@ -57,8 +57,8 @@ export default function Slice() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const w = Object.entries(weights).filter(([, v]) => v > 0).map(([k, v]) => `${k}:${v}`).join(',');
-    const q = new URLSearchParams({ w, n: String(notional), name });
-    window.history.replaceState(null, '', `#${q.toString()}`);
+    // hand-built so the link stays readable: #w=NVDA:20,AAPL:15&n=1000&name=Mag%207
+    window.history.replaceState(null, '', `#w=${w}&n=${notional}&name=${encodeURIComponent(name)}`);
   }, [weights, notional, name]);
 
   const target = connected && useWallet ? connected : (isAddress(viewAddr) ? viewAddr : null);
