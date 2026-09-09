@@ -1,0 +1,5 @@
+web-next/node_modules
+web-next/out/
+web-next/.next/
+.env
+.DS_Store
