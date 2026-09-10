@@ -9,7 +9,7 @@ Project name
     Mirrl
 
 Short description (paste as is)
-    Build your own index of Coinbase tokenized stocks on Base, then hold it. Weight any of the 11 B20 stocks, price the index live from the Chainlink equity feeds with a freshness badge per feed, read what any wallet really holds via scaledBalanceOf so corporate-action multipliers are applied, and get the exact buys and sells to reach target, each prefilled on CoW Swap and Aerodrome. Nothing custodied, nothing executed; the URL is the index, so anyone can rebalance their own wallet to your weights.
+    Build your own index of Coinbase tokenized stocks on Base, then hold it. Weight any of the 11 B20 stocks, price the index live from the Chainlink equity feeds with a freshness badge per feed, read what any wallet really holds via scaledBalanceOf so corporate-action multipliers are applied, and execute the exact buys and sells to reach target from your own wallet through KyberSwap on Base, one signature per leg, geo-gated to non-US persons. Nothing custodied. The URL is the index, so anyone can rebalance their own wallet to your weights.
 
 Live link
     https://mirrl.xyz

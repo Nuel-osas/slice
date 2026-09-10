@@ -9,8 +9,9 @@ Live: https://mirrl.xyz
 1. Weight any of the eleven Coinbase-issued B20 stocks (NVDAc, AAPLc, MSFTc, GOOGLc, AMZNc, METAc, TSLAc, MSTRc, SPCXc, SNDKc, COINc), or start from a preset.
 2. The index is priced live from the Chainlink tokenized-equity feeds on Base, with a freshness badge per feed. Equity feeds heartbeat every 24 h and stop moving when the market is closed, so a price without its age is not a price.
 3. Connect a wallet, or paste any Base address, and see what it really holds. Holdings are read with `scaledBalanceOf`, so corporate-action multipliers are applied. One B20 token is not always one share.
-4. Mirrl computes the exact buys and sells to reach your weights and links each one, prefilled, on CoW Swap and Aerodrome. You sign in your own wallet. Nothing is custodied, nothing is executed by Mirrl.
-5. The URL is the index. Copy it and anyone can rebalance their own wallet to your weights.
+4. Mirrl computes the exact buys and sells to reach your weights and executes them from your connected wallet through the KyberSwap aggregator on Base, one signature per leg, sells first so they fund the buys. Nothing is custodied. Without a wallet, each leg opens prefilled on CoW Swap or Aerodrome instead.
+5. Trading is gated: a geo lookup blocks US locations and the user attests they are a non-US person before the first trade, because Coinbase tokenized stocks are offered under Regulation S.
+6. The URL is the index. Copy it and anyone can rebalance their own wallet to your weights.
 
 ## Why this and not a wrapper token
 

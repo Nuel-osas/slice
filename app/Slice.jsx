@@ -209,7 +209,7 @@ export default function Slice() {
           <p className="sub">
             Weight any of the {STOCKS.length} Coinbase-issued stocks on Base. Mirrl prices the index from the
             Chainlink equity feeds, reads what a wallet really holds after corporate-action multipliers, and
-            hands you the exact trades to get to target. Nothing is custodied; every trade happens in your wallet on a venue Coinbase lists.
+            executes the exact trades to get there, in your own wallet through KyberSwap on Base. Nothing is custodied, ever.
           </p>
           <div className="presets">
             {Object.entries(PRESETS).map(([k, w]) => (
@@ -370,7 +370,7 @@ export default function Slice() {
         <div className="wrap">
           <p>
             Prices are Chainlink equity feeds on Base. Holdings are read with <code>scaledBalanceOf</code>, so corporate-action multipliers are applied.
-            Mirrl plans and links; every trade is signed in your own wallet. Coinbase tokenized stocks are available in eligible jurisdictions outside the United States.
+            Mirrl never holds funds: every trade is signed in your own wallet and routed through KyberSwap. Trading is gated to non-US persons, as the offering requires. Coinbase tokenized stocks are available in eligible jurisdictions outside the United States.
           </p>
           <details className="verify">
             <summary>Verify contract addresses</summary>
