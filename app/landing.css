@@ -107,3 +107,5 @@ code{font-family:var(--mono);font-size:.92em;background:var(--well);padding:1px 
 .verify[open] summary::before{transform:rotate(45deg)}
 .verify > .muted{margin-top:8px}
 .fine{margin-top:var(--s5);font-size:12px}
+
+.btn--wide{width:100%;height:46px;margin-top:var(--s4);font-size:15px}

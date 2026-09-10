@@ -51,6 +51,8 @@ export default function Slice() {
   useEffect(() => {
     const h = readHash();
     if (h) { setWeights(h.weights); setNotional(h.notional); setName(h.name || 'Shared'); }
+    const a = new URLSearchParams(window.location.search).get('a');
+    if (a && isAddress(a)) setViewAddr(a);
   }, []);
 
   // keep the URL shareable at all times
@@ -265,7 +267,14 @@ export default function Slice() {
                   );
                 })}
               </div>
-              {trades.length > 0 && <p className="muted" style={{ marginTop: 12 }}>Each link opens the swap prefilled with the right pair on Base. You sign in your own wallet. Sizes assume the last oracle print; check the venue quote.</p>}
+              {trades.length > 0 && (
+                <>
+                  <a className="btn btn--accent btn--wide" href={venues(trades[0].token, trades[0].delta > 0 ? 'buy' : 'sell').cow} target="_blank" rel="noreferrer">
+                    Rebalance now · {trades[0].delta > 0 ? 'buy' : 'sell'} {trades[0].sym}c first
+                  </a>
+                  <p className="muted" style={{ marginTop: 10 }}>Opens each swap prefilled with the right pair on Base. You sign in your own wallet. Sizes assume the last oracle print; check the venue quote.</p>
+                </>
+              )}
             </div>
           </aside>
         </div>
