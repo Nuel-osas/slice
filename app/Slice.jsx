@@ -170,7 +170,7 @@ export default function Slice() {
 
         <div className="layout">
           {/* ---- weights + prices ---- */}
-          <section className="panel" style={{ padding: 0, border: '1px solid var(--line)' }}>
+          <section className="panel">
             <div className="panel__head">
               <h2>Index</h2>
               <div className="inline">
