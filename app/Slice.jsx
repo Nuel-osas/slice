@@ -274,16 +274,20 @@ export default function Slice() {
       <footer className="foot">
         <div className="wrap">
           <p>
-            Prices are the Chainlink tokenized-equity feeds on Base: total-return, multiplier-adjusted, 8 decimals, updating on a 0.5% move or a 24 h heartbeat.
-            Holdings use <code>scaledBalanceOf</code>, so one token is never assumed to be one share. Coinbase tokenized stocks are offered under Regulation S in eligible jurisdictions outside the United States; Slice does not offer, sell or execute anything, it only plans and links.
+            Prices are Chainlink equity feeds on Base. Holdings are read with <code>scaledBalanceOf</code>, so corporate-action multipliers are applied.
+            Slice plans and links; every trade is signed in your own wallet. Coinbase tokenized stocks are available in eligible jurisdictions outside the United States.
           </p>
-          <div className="scroll-x">
-            <table className="addrs"><tbody>
-              <tr><td>Registry</td><td><a href={`${EXPLORER}/address/${REGISTRY}`}>{REGISTRY}</a></td></tr>
-              {STOCKS.map((s) => <tr key={s.sym}><td>{s.sym}c</td><td><a href={`${EXPLORER}/token/${s.token}`}>{s.token}</a></td><td>feed <a href={`${EXPLORER}/address/${s.feed}`}>{short(s.feed)}</a></td></tr>)}
-            </tbody></table>
-          </div>
-          <p style={{ marginTop: 16 }}>Built for the Base Builder Quest, Sep 2026 · <a href="https://github.com/Nuel-osas/slice">GitHub</a> · <a href="https://www.base.org/stocks">base.org/stocks</a></p>
+          <details className="verify">
+            <summary>Verify contract addresses</summary>
+            <p className="muted">Only tokens on <a href="https://www.base.org/stocks">Coinbase&rsquo;s published list</a> are issued by Coinbase. These are the ones Slice uses.</p>
+            <div className="scroll-x">
+              <table className="addrs"><tbody>
+                <tr><td>Registry</td><td><a href={`${EXPLORER}/address/${REGISTRY}`}>{REGISTRY}</a></td></tr>
+                {STOCKS.map((s) => <tr key={s.sym}><td>{s.sym}c</td><td><a href={`${EXPLORER}/token/${s.token}`}>{s.token}</a></td><td>feed <a href={`${EXPLORER}/address/${s.feed}`}>{short(s.feed)}</a></td></tr>)}
+              </tbody></table>
+            </div>
+          </details>
+          <p className="fine">Slice &middot; <a href="https://github.com/Nuel-osas/slice">GitHub</a></p>
         </div>
       </footer>
     </>

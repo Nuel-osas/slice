@@ -100,3 +100,10 @@ code{font-family:var(--mono);font-size:.92em;background:var(--well);padding:1px 
 .addrs{margin-top:var(--s4);font-size:12px;border-collapse:collapse}
 .addrs td{padding:4px 12px 4px 0;font-family:var(--mono);white-space:nowrap}
 .skip{position:absolute;left:-9999px}
+
+.verify{margin-top:var(--s4)}
+.verify summary{cursor:pointer;color:var(--text-2);font-weight:500;list-style:none;display:inline-flex;align-items:center;gap:8px}
+.verify summary::before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);transition:transform .15s}
+.verify[open] summary::before{transform:rotate(45deg)}
+.verify > .muted{margin-top:8px}
+.fine{margin-top:var(--s5);font-size:12px}
