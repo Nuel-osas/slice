@@ -109,3 +109,11 @@ code{font-family:var(--mono);font-size:.92em;background:var(--well);padding:1px 
 .fine{margin-top:var(--s5);font-size:12px}
 
 .btn--wide{width:100%;height:46px;margin-top:var(--s4);font-size:15px}
+
+.trade .links .go{height:30px;padding:0 12px;border-radius:999px;border:0;background:var(--text-1);color:#fff;font:600 12px var(--sans);cursor:pointer}
+.trade .links .go:disabled{opacity:.5;cursor:default}
+.btn:disabled{opacity:.7;cursor:default}
+.err{color:var(--warn)}
+.gate{position:fixed;inset:0;background:rgba(17,17,20,.45);display:grid;place-items:center;z-index:50;padding:16px}
+.gate__card{background:#fff;border-radius:20px;padding:26px 28px;max-width:520px;width:100%;box-shadow:0 30px 80px -30px rgba(0,0,0,.5)}
+.gate__card h3{font-size:20px;margin-bottom:8px;color:var(--text-1)}

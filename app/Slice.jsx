@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount, usePublicClient } from 'wagmi';
-import { isAddress } from 'viem';
-import { B20_ABI, EXPLORER, FEED_ABI, PRESETS, REGISTRY, SAMPLE_HOLDER, STOCKS, venues } from './chain';
+import { useAccount, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi';
+import { erc20Abi, isAddress, parseUnits } from 'viem';
+import { ELIGIBLE_KEY, executeLeg, geoBlocked } from './trade';
+import { B20_ABI, EXPLORER, FEED_ABI, PRESETS, REGISTRY, SAMPLE_HOLDER, STOCKS, USDC, venues } from './chain';
 
 const usd = (n, d = 2) => (n == null || Number.isNaN(n) ? '—' : n.toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: d }));
 const num = (n, d = 4) => (n == null ? '—' : n.toLocaleString(undefined, { maximumFractionDigits: d }));
@@ -35,7 +36,13 @@ function readHash() {
 
 export default function Slice() {
   const client = usePublicClient();
-  const { address: connected } = useAccount();
+  const { address: connected, chainId } = useAccount();
+  const { data: walletClient } = useWalletClient();
+  const { switchChainAsync } = useSwitchChain();
+  const [gate, setGate] = useState(null);        // null | 'checking' | 'blocked' | 'attest' | 'ok'
+  const [pending, setPending] = useState(null);  // { sym, msg }
+  const [done, setDone] = useState([]);          // [{ sym, hash }]
+  const [usdcBal, setUsdcBal] = useState(null);
 
   const [weights, setWeights] = useState(PRESETS['Mag 7']);
   const [name, setName] = useState('Mag 7');
@@ -100,6 +107,43 @@ export default function Slice() {
 
   useEffect(() => { loadPrices(); const t = setInterval(loadPrices, 60_000); return () => clearInterval(t); }, [loadPrices]);
   useEffect(() => { loadHoldings(); }, [loadHoldings]);
+  useEffect(() => {
+    if (!client || !connected) { setUsdcBal(null); return; }
+    client.readContract({ address: USDC, abi: erc20Abi, functionName: 'balanceOf', args: [connected] }).then(setUsdcBal).catch(() => {});
+  }, [client, connected, done]);
+
+  // ---- eligibility: geo lookup once, then an explicit attestation ---------
+  const ensureEligible = useCallback(async () => {
+    try { if (localStorage.getItem(ELIGIBLE_KEY) === 'yes') return true; } catch { /* no storage */ }
+    setGate('checking');
+    if (await geoBlocked()) { setGate('blocked'); return false; }
+    setGate('attest');
+    return false;
+  }, []);
+  const attest = () => { try { localStorage.setItem(ELIGIBLE_KEY, 'yes'); } catch { /* no storage */ } setGate('ok'); };
+
+  // ---- execute one leg from the plan, in the connected wallet ------------
+  const run = useCallback(async (t) => {
+    if (!connected || !walletClient) return;
+    if (!(await ensureEligible())) return;
+    if (chainId !== 8453) { try { await switchChainAsync({ chainId: 8453 }); } catch { return; } }
+    const buy = t.delta > 0;
+    const amountIn = buy ? parseUnits(Math.abs(t.delta).toFixed(6), 6) : parseUnits(Math.min(t.shares, Math.abs(t.delta) / t.price).toFixed(8), 8);
+    if (buy && usdcBal != null && usdcBal < amountIn) { setPending({ sym: t.sym, msg: `You need ${(Math.abs(t.delta)).toFixed(2)} USDC on Base for this leg; you have ${(Number(usdcBal) / 1e6).toFixed(2)}.`, error: true }); return; }
+    try {
+      const hash = await executeLeg({
+        walletClient, publicClient: client, account: connected,
+        tokenIn: buy ? USDC : t.token, tokenOut: buy ? t.token : USDC, amountIn,
+        say: (msg) => setPending({ sym: t.sym, msg }),
+      });
+      setDone((d) => [...d, { sym: t.sym, hash }]);
+      setPending(null);
+      loadHoldings();
+    } catch (e) {
+      setPending({ sym: t.sym, msg: (e?.shortMessage || e?.message || 'Failed').slice(0, 160), error: true });
+    }
+  }, [connected, walletClient, client, chainId, switchChainAsync, ensureEligible, usdcBal, loadHoldings]);
+
 
   // ---- the index -----------------------------------------------------------
   const totalW = Object.values(weights).reduce((a, b) => a + (+b || 0), 0);
@@ -130,6 +174,11 @@ export default function Slice() {
 
   const trades = plan.filter((p) => Math.abs(p.delta) >= 1 && (p.w > 0 || p.shares > 0)).sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
   const worst = Object.values(prices).map((p) => freshness(p.updatedAt)).sort((a, b) => b.age - a.age)[0];
+  // Rebalance = every leg in order, sells first so they fund the buys.
+  const runAll = useCallback(async () => {
+    const order = [...trades].sort((a, b) => a.delta - b.delta);
+    for (const t of order) { await run(t); }
+  }, [trades, run]);
   const preset = Object.entries(PRESETS).find(([, w]) => JSON.stringify(w) === JSON.stringify(weights))?.[0];
 
   const setW = (sym, v) => setWeights((w) => ({ ...w, [sym]: v === '' ? 0 : Math.max(0, Math.min(100, +v)) }));
@@ -262,23 +311,60 @@ export default function Slice() {
                     <div className="trade" key={t.sym}>
                       <span className={`side ${side}`}>{side.toUpperCase()}</span>
                       <span className="what">{usd(Math.abs(t.delta), 0)} {t.sym}c<small>{t.price ? num(Math.abs(t.delta) / t.price) : '—'} sh · {pct(t.curW * 100)} → {pct(t.w * 100)}</small></span>
-                      <span className="links"><a href={v.cow} target="_blank" rel="noreferrer">CoW</a><a href={v.aero} target="_blank" rel="noreferrer">Aerodrome</a></span>
+                      <span className="links">
+                        {connected ? <button className="go" onClick={() => run(t)} disabled={Boolean(pending)}>{side === 'buy' ? 'Buy' : 'Sell'}</button> : null}
+                        <a href={v.cow} target="_blank" rel="noreferrer">CoW</a><a href={v.aero} target="_blank" rel="noreferrer">Aerodrome</a>
+                      </span>
                     </div>
                   );
                 })}
               </div>
               {trades.length > 0 && (
                 <>
-                  <a className="btn btn--accent btn--wide" href={venues(trades[0].token, trades[0].delta > 0 ? 'buy' : 'sell').cow} target="_blank" rel="noreferrer">
-                    Rebalance now · {trades[0].delta > 0 ? 'buy' : 'sell'} {trades[0].sym}c first
-                  </a>
-                  <p className="muted" style={{ marginTop: 10 }}>Opens each swap prefilled with the right pair on Base. You sign in your own wallet. Sizes assume the last oracle print; check the venue quote.</p>
+                  {connected
+                    ? <button className="btn btn--accent btn--wide" onClick={runAll} disabled={Boolean(pending)}>{pending ? pending.msg : `Rebalance now · ${trades.length} ${trades.length === 1 ? 'swap' : 'swaps'} in your wallet`}</button>
+                    : <a className="btn btn--accent btn--wide" href={venues(trades[0].token, trades[0].delta > 0 ? 'buy' : 'sell').cow} target="_blank" rel="noreferrer">Rebalance now · {trades[0].delta > 0 ? 'buy' : 'sell'} {trades[0].sym}c first</a>}
+                  {pending?.error && <p className="muted err" style={{ marginTop: 10 }}>{pending.sym}c: {pending.msg}</p>}
+                  {done.length > 0 && <p className="muted" style={{ marginTop: 10 }}>Filled: {done.map((d, i) => <a key={d.hash} href={`${EXPLORER}/tx/${d.hash}`} target="_blank" rel="noreferrer">{d.sym}c{i < done.length - 1 ? ', ' : ''}</a>)}</p>}
+                  <p className="muted" style={{ marginTop: 10 }}>
+                    {connected
+                      ? <>Routed through KyberSwap on Base, one signature per leg, 1% max slippage. {usdcBal != null && <>You hold {(Number(usdcBal) / 1e6).toLocaleString(undefined, { maximumFractionDigits: 2 })} USDC on Base.</>}</>
+                      : <>Connect a wallet to trade here, or open each swap prefilled on a venue. Sizes assume the last oracle print.</>}
+                  </p>
                 </>
               )}
             </div>
           </aside>
         </div>
       </div>
+
+      {gate && gate !== 'ok' && (
+        <div className="gate" role="dialog" aria-modal="true">
+          <div className="gate__card">
+            {gate === 'checking' && <p>Checking availability in your region…</p>}
+            {gate === 'blocked' && (
+              <>
+                <h3>Not available in your region</h3>
+                <p className="muted">Coinbase tokenized stocks are offered under Regulation S to persons outside the United States. Trading is not available from your location. You can still plan an index.</p>
+                <button className="btn" onClick={() => setGate(null)}>Close</button>
+              </>
+            )}
+            {gate === 'attest' && (
+              <>
+                <h3>Before you trade</h3>
+                <p className="muted">These tokens are offered under Regulation S and are not available to US persons. Mirrl routes your order through KyberSwap on Base and never holds your funds. Trades are final once mined.</p>
+                <label className="muted" style={{ display: 'flex', gap: 10, alignItems: 'flex-start', margin: '14px 0' }}>
+                  <input type="checkbox" id="att" /> I confirm I am not a US person, I am located in an eligible jurisdiction, and I understand these are my own trades.
+                </label>
+                <div className="inline">
+                  <button className="btn btn--accent" onClick={() => { if (document.getElementById('att').checked) attest(); }}>Continue</button>
+                  <button className="btn" onClick={() => setGate(null)}>Cancel</button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       <footer className="foot">
         <div className="wrap">
