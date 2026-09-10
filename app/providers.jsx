@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
 
 const config = getDefaultConfig({
-  appName: 'Slice',
+  appName: 'Mirrl',
   // WalletConnect (Reown) cloud project id; injected and Coinbase Wallet work without it.
   projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID || 'slice_base_tokenized_stocks',
   chains: [base],

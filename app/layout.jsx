@@ -4,8 +4,8 @@ export const metadata = {
   // Base Build app verification
   other: { 'base:app_id': '6aa1eac93ee3d6b47f7f053c' },
   metadataBase: new URL('https://mirrl.xyz'),
-  openGraph: { title: 'Slice', description: 'Build your own index of Coinbase tokenized stocks on Base, then hold it.', type: 'website' },
-  title: 'Slice: your own index of tokenized stocks on Base',
+  openGraph: { title: 'Mirrl', description: 'Build your own index of Coinbase tokenized stocks on Base, then hold it.', type: 'website' },
+  title: 'Mirrl: your own index of tokenized stocks on Base',
   description:
     'Weight Coinbase tokenized stocks into a personal index, price it live from Chainlink, see what any Base wallet actually holds, and get the exact trades to rebalance.',
   icons: {

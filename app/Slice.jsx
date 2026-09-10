@@ -143,20 +143,20 @@ export default function Slice() {
     <>
       <div className="wrap">
         <div className="top">
-          <a className="brand" href="#top" aria-label="Slice">
+          <a className="brand" href="#top" aria-label="Mirrl">
             <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12 L12 3 A9 9 0 0 1 21 12 Z" fill="currentColor"/><path d="M12 12 L21 12 A9 9 0 1 1 12 3 Z" fill="none" stroke="currentColor" strokeWidth="1.5"/></svg>
-            Slice
+            Mirrl
           </a>
           <span className="chip">Base · Coinbase tokenized stocks</span>
           <span className="spacer" />
-          <a className="btn btn--sm" href="https://github.com/Nuel-osas/slice">Code</a>
+          <a className="btn btn--sm" href="https://github.com/Nuel-osas/mirrl">Code</a>
           <ConnectButton chainStatus="none" showBalance={false} accountStatus="address" />
         </div>
 
         <div className="hero-s" id="top">
           <h1>Build your own index of tokenized stocks. Then hold it.</h1>
           <p className="sub">
-            Weight any of the {STOCKS.length} Coinbase-issued stocks on Base. Slice prices the index from the
+            Weight any of the {STOCKS.length} Coinbase-issued stocks on Base. Mirrl prices the index from the
             Chainlink equity feeds, reads what a wallet really holds after corporate-action multipliers, and
             hands you the exact trades to get to target. Nothing is custodied; every trade happens in your wallet on a venue Coinbase lists.
           </p>
@@ -275,11 +275,11 @@ export default function Slice() {
         <div className="wrap">
           <p>
             Prices are Chainlink equity feeds on Base. Holdings are read with <code>scaledBalanceOf</code>, so corporate-action multipliers are applied.
-            Slice plans and links; every trade is signed in your own wallet. Coinbase tokenized stocks are available in eligible jurisdictions outside the United States.
+            Mirrl plans and links; every trade is signed in your own wallet. Coinbase tokenized stocks are available in eligible jurisdictions outside the United States.
           </p>
           <details className="verify">
             <summary>Verify contract addresses</summary>
-            <p className="muted">Only tokens on <a href="https://www.base.org/stocks">Coinbase&rsquo;s published list</a> are issued by Coinbase. These are the ones Slice uses.</p>
+            <p className="muted">Only tokens on <a href="https://www.base.org/stocks">Coinbase&rsquo;s published list</a> are issued by Coinbase. These are the ones Mirrl uses.</p>
             <div className="scroll-x">
               <table className="addrs"><tbody>
                 <tr><td>Registry</td><td><a href={`${EXPLORER}/address/${REGISTRY}`}>{REGISTRY}</a></td></tr>
@@ -287,7 +287,7 @@ export default function Slice() {
               </tbody></table>
             </div>
           </details>
-          <p className="fine">Slice &middot; <a href="https://github.com/Nuel-osas/slice">GitHub</a></p>
+          <p className="fine">Mirrl &middot; <a href="https://github.com/Nuel-osas/mirrl">GitHub</a></p>
         </div>
       </footer>
     </>
