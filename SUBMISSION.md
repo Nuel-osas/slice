@@ -12,7 +12,7 @@ Short description (paste as is)
     Build your own index of Coinbase tokenized stocks on Base, then hold it. Weight any of the 11 B20 stocks, price the index live from the Chainlink equity feeds with a freshness badge per feed, read what any wallet really holds via scaledBalanceOf so corporate-action multipliers are applied, and get the exact buys and sells to reach target, each prefilled on CoW Swap and Aerodrome. Nothing custodied, nothing executed; the URL is the index, so anyone can rebalance their own wallet to your weights.
 
 Live link
-    https://slice-base.vercel.app
+    https://mirrl.xyz
 
 Repo
     https://github.com/Nuel-osas/slice
@@ -44,7 +44,7 @@ $1.4M NVDAc position is on screen).
        a friend and they can rebalance their wallet to your weights. That's a personal
        index with no issuer, no wrapper token and no custodian, because everything it
        needs was already on Base."
-0:72  "Slice, live at slice dash base dot vercel dot app."
+0:72  "Slice, live at mirrl dot xyz."
 
 ## X post
 
@@ -58,7 +58,7 @@ Demo: <Loom URL>
 @buildonbase
 
 First reply: live link + repo.
-    Live: https://slice-base.vercel.app
+    Live: https://mirrl.xyz
     Code: https://github.com/Nuel-osas/slice
     Try the Sample holder button: a real wallet with $1.4M of NVDAc, and the plan to turn it into Mag 7.
 

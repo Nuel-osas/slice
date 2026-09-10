@@ -2,7 +2,7 @@
 
 Build your own index of Coinbase tokenized stocks on Base, then hold it.
 
-Live: https://slice-base.vercel.app
+Live: https://mirrl.xyz
 
 ## What it does
 
