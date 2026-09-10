@@ -18,12 +18,17 @@ Repo
     https://github.com/Nuel-osas/slice
 
 Demo video
-    <Loom URL>
+    <YouTube unlisted URL of video/out/mirrl.mp4>
 
 Tweet
     <X post URL>
 
-## Loom script, 75 seconds
+## Film
+
+Rendered with Remotion and an ElevenLabs voiceover: `video/out/mirrl.mp4` (1920x1080, 66 s).
+Upload it natively to X (native video outranks a Loom link) and also to YouTube unlisted for the form.
+
+## Voiceover script (as recorded)
 
 Open the live site with the Sample holder already loaded (click it before recording so the
 $1.4M NVDAc position is on screen).
@@ -53,7 +58,7 @@ Coinbase put 11 real stocks on Base. Nobody's made them into an index yet.
 So I built Mirrl: weight the stocks, price it from Chainlink, see what a wallet really holds
 after multipliers, get the exact trades to rebalance. No wrapper token, no custodian.
 
-Demo: <Loom URL>
+(attach video/out/mirrl.mp4 natively)
 
 @buildonbase
 
@@ -64,8 +69,8 @@ First reply: live link + repo.
 
 ## Checklist
 
-- [ ] Record Loom on the live site, not localhost
-- [ ] Post on X with the Loom link, tag @buildonbase
+- [ ] Upload video/out/mirrl.mp4 to YouTube (unlisted) for the form
+- [ ] Post on X with the mp4 attached natively, tag @buildonbase
 - [ ] Reply with live link and repo
 - [ ] Submit form with the tweet URL
 - [ ] Screenshot the form confirmation

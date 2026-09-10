@@ -1,0 +1,17 @@
+{
+  "name": "mirrl-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render Mirrl out/mirrl.mp4 --log=error"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.512",
+    "@remotion/google-fonts": "4.0.512",
+    "@remotion/media": "4.0.512",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "remotion": "4.0.512"
+  }
+}
