@@ -9,7 +9,8 @@ import { useState } from 'react';
 
 const config = getDefaultConfig({
   appName: 'Slice',
-  projectId: 'slice_base_tokenized_stocks',
+  // WalletConnect (Reown) cloud project id; injected and Coinbase Wallet work without it.
+  projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID || 'slice_base_tokenized_stocks',
   chains: [base],
   ssr: true,
 });
