@@ -15,7 +15,7 @@ Live link
     https://mirrl.xyz
 
 Repo
-    https://github.com/Nuel-osas/mirrl
+    https://github.com/Nuel-osas/slice
 
 Demo video
     <Loom URL>
@@ -59,7 +59,7 @@ Demo: <Loom URL>
 
 First reply: live link + repo.
     Live: https://mirrl.xyz
-    Code: https://github.com/Nuel-osas/mirrl
+    Code: https://github.com/Nuel-osas/slice
     Try the Sample holder button: a real wallet with $1.4M of NVDAc, and the plan to turn it into Mag 7.
 
 ## Checklist

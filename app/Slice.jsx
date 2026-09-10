@@ -149,7 +149,7 @@ export default function Slice() {
           </a>
           <span className="chip">Base · Coinbase tokenized stocks</span>
           <span className="spacer" />
-          <a className="btn btn--sm" href="https://github.com/Nuel-osas/mirrl">Code</a>
+          <a className="btn btn--sm" href="https://github.com/Nuel-osas/slice">Code</a>
           <ConnectButton chainStatus="none" showBalance={false} accountStatus="address" />
         </div>
 
@@ -287,7 +287,7 @@ export default function Slice() {
               </tbody></table>
             </div>
           </details>
-          <p className="fine">Mirrl &middot; <a href="https://github.com/Nuel-osas/mirrl">GitHub</a></p>
+          <p className="fine">Mirrl &middot; <a href="https://github.com/Nuel-osas/slice">GitHub</a></p>
         </div>
       </footer>
     </>
